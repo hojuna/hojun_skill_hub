@@ -7,7 +7,8 @@ description: Choose relevant local solving skills for a new coding or practical 
 
 1. Read the actual task README, files, source, available commands, tests, required outputs, and time constraints.
 2. Decide whether a local Skill **materially improves** solving this task. Use the following only as guides:
-   - Web page, UI, form → `build-web-ui`
+   - Interactive web artifact, standalone HTML, browser-openable tool or app demo → `web-artifacts-builder`
+   - Web page, UI, form (without artifact packaging needs) → `build-web-ui`
    - CRUD, booking, stateful workflows → `build-app-workflow`
    - CSV/JSON cleaning or aggregation → `solve-data-task`
    - HTTP API/backend → `build-api`

@@ -44,12 +44,25 @@ Skill 자동 발견은 Codex 배포 버전·세션 시작 시점에 따라 다�
 
 설치 스크립트를 다시 실행해도 **복사된 기존 Skill은 갱신되지 않습니다**. 허용된 환경에서 허브 원본을 최신화한 뒤 최신 허브의 `START_HERE.md`와 그 안의 스킬을 직접 읽도록 지정하면 됩니다. 제공된 Codex나 플랫폼 설정은 변경하지 않습니다. 시험 문제·결과물이 없는 공개 참고자료용 허브와 실제 작업 폴더를 구분하세요.
 
+### 웹 아티팩트 만들기
+
+`web-artifacts-builder`는 인터랙티브 HTML 도구·대시보드·웹앱 데모를 **구현 → 미리보기 → 검증 → 파일 전달**까지 만드는 Codex용 스킬입니다. Claude 전용 패널을 추가하거나 Claude API를 호출하지 않습니다. 기존 프로젝트는 유지하고, 간단한 도구는 설치 없는 단일 HTML로 만들 수 있습니다.
+
+```text
+/tmp/hojun_skill_hub/.agents/skills/web-artifacts-builder/SKILL.md를 읽고,
+요청한 도구를 브라우저에서 실제로 조작 가능한 웹 아티팩트로 만들어줘.
+기존 프로젝트와 요구사항을 우선하고, 실행·미리보기 방법과 검증 결과를 알려줘.
+```
+
+HTML·CSS·브라우저용 JS를 한 파일로 묶는 Python 보조 도구도 포함됩니다. 이 도구는 React/TypeScript 컴파일러가 아니며, 외부 이미지·폰트·API까지 자동으로 포함하지 않습니다. 자세한 사용법과 출처는 해당 `SKILL.md`에 있습니다.
+
 ## 상황별 스킬
 
 | 필요한 상황 | 사용 스킬 | 역할 |
 |---|---|---|
 | 과제가 무엇인지 분류 | `task-router` | 시작 시 필요한 Skill만 선택 |
 | 맞는 스킬이 없음 | 스킬 없이 직접 해결 | 요구사항 분석 → 구현 → 실행·테스트 → 수정 |
+| 인터랙티브 웹 도구·단일 HTML·앱 데모 | `web-artifacts-builder` | 구현·패키징·미리보기·검증·전달 |
 | 웹페이지·랜딩 페이지 | `build-web-ui` | 실제로 작동하는 화면, 폼, 반응형 |
 | 예약·문의·할 일·관리 앱 | `build-app-workflow` | CRUD, 상태, 저장, 검증 |
 | CSV/JSON 가공·집계·리포트 | `solve-data-task` | 데이터 정합성과 출력 검증 |
@@ -67,6 +80,10 @@ Skill 자동 발견은 Codex 배포 버전·세션 시작 시점에 따라 다�
 ```text
 .agents/skills/
   task-router/SKILL.md
+  web-artifacts-builder/
+    SKILL.md
+    scripts/package-artifact.py
+    tests/test_package_artifact.py
   build-web-ui/SKILL.md
   build-app-workflow/SKILL.md
   solve-data-task/SKILL.md
@@ -88,6 +105,7 @@ docs/SOURCES.md
 
 ```bash
 python3 scripts/validate-skills.py
+python3 -m unittest discover -s .agents/skills/web-artifacts-builder/tests -v
 ```
 
-이 검사는 **Skill 구조·메타데이터의 기본 유효성만 확인**합니다. 각 과제에서 성능 향상과 Codex 자동 발견까지 증명하는 테스트는 아닙니다.
+첫 검사는 **Skill 구조·메타데이터의 기본 유효성만 확인**합니다. 두 번째는 HTML 패키징 보조 도구의 로컬 단위 테스트입니다. 각 과제에서 성능 향상과 Codex 자동 발견까지 증명하는 테스트는 아닙니다.

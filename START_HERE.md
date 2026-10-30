@@ -16,6 +16,7 @@
 
 ## 문제 유형 → 직접 읽을 Skill
 
+- 인터랙티브 웹 아티팩트/단일 HTML/브라우저에서 여는 도구·데모 → `.agents/skills/web-artifacts-builder/SKILL.md`
 - 화면/랜딩 페이지/프런트엔드 → `.agents/skills/build-web-ui/SKILL.md`
 - CRUD/상태 변경/예약/관리 도구 → `.agents/skills/build-app-workflow/SKILL.md`, 화면이 중요하면 `build-web-ui` 추가
 - 데이터 정리/CSV/엑셀 유사 테이블/통계 → `.agents/skills/solve-data-task/SKILL.md`
