@@ -1,51 +1,86 @@
-# hojun_skill_hub
+# Hojun Skill Hub
 
-실무형 AI 코딩 과제를 위한 **시나리오 중심 Skill·MCP 준비 저장소**입니다.
+범용 코딩 에이전트용 **실제 실행 가능한 Agent Skills 모음**. 특정 시험 문제, 답안, 가상 문제집이 들어 있지 않습니다.
 
-> 우선순위: 문제 해결용 스킬을 중심으로 준비하고, 공통 검수와 이해 정리는 각각 하나로 묶습니다. 도구 개수나 복잡한 아키텍처가 아니라 요구사항을 충족하는 실제 결과물을 목표로 합니다.
+## 핵심 원칙
 
-## 현재 상태
+- **풀이 우선:** 과제 요구사항을 충족하는 작동 결과물을 만드는 데 집중합니다.
+- **선택적으로 사용:** 과제와 관련된 풀이 Skill 1~2개만 읽습니다. 전체 Skill을 한꺼번에 적용하지 않습니다.
+- **검수·이해는 보조:** `review-result`, `explain-work`를 필요할 때 한 번씩 사용합니다.
+- **기존 환경 존중:** 제공된 코드·테스트·도구·제출 규칙이 언제나 우선합니다.
+- **규정 준수:** 문제·파일·산출물의 외부 전송, 비허용 도구 사용, 감독·플랫폼 제한 우회를 지시하지 않습니다.
 
-- 단계: **가상 과제 설계 + 공개 스킬 후보 조사 + 도입 계획**.
-- 12개 시나리오는 새로 작성한 가상 과제이며, 실제 시험 문제·유출 자료·출제 예측의 근거가 아닙니다.
-- 공개 원문을 확인한 후보와 직접 작성할 스킬을 구분합니다.
-- 외부 스킬 원문을 복제하거나 설치하지 않았습니다. MCP도 자동 활성화하지 않습니다.
-- 실제 에이전트 A/B 실행·시험 환경 호환성·점수 향상은 아직 검증하지 않았습니다.
-- 공식 채점표를 재현한 저장소가 아니며, 특정 점수나 순위를 보장하지 않습니다.
+## 0. 빠른 시작 — 그대로 따라 하기
 
-## 읽는 순서
+**① 작업 환경 터미널에서 공개 허브 가져오기**
 
-| 문서 | 내용 |
-|---|---|
-| [가상 과제 12종](docs/SCENARIOS.md) | 웹서비스·업무 도구·CSV·버그 수정·API·검색·자동화·문서 |
-| [Skill 후보 목록](docs/SKILL_CATALOG.md) | 출처, 용도, 우선순위, 수정할 부분, 채택 상태 |
-| [MCP 선택 기준](docs/MCP_DECISIONS.md) | Playwright 조건부 사용, CLI 대체, 외부 전송 위험 |
-| [시나리오 점검 계획](docs/SCENARIO_CHECKS.md) | 도구 없는 기준선과 비교하는 방법, 채택·제외 조건 |
-| [고득점 목표 작업 전략](docs/SCORE_STRATEGY.md) | 요구사항→작동→검증→근거 있는 개선→이해 |
-| [출처 목록](sources/README.md) | 확인한 공개 원문과 아직 남아 있는 검증 범위 |
-| [에이전트 작업 원칙](AGENTS.md) | 필요한 자료만 읽고 기존 프로젝트와 실제 과제 지시를 우선 |
-
-## 기본 설계
-
-```text
-과제·기존 코드·실행 환경 확인
-  → 필요한 풀이 스킬 1~2개 선택
-  → 동작하는 핵심 경로 구현
-  → 실행 결과에 따라 수정
-  → 공통 검수 1개
-  → 구현·선택·검증·한계를 짧게 설명
+```bash
+git clone https://github.com/hojuna/hojun_skill_hub.git /tmp/hojun_skill_hub
 ```
 
-문제 수나 기술 스택은 고정하지 않습니다. 하나의 서비스에 여러 요구사항이 있는 경우와 독립적인 여러 소과제를 모두 고려합니다. 작업 배점이 제공되면 그 기준을 우선하며, 제공되지 않은 배점을 만들어내지 않습니다.
+**② 과제의 작업 디렉터리에서 선택적으로 Skill 설치 (선택 사항)**
 
-## 공개 저장소 범위
+```bash
+bash /tmp/hojun_skill_hub/scripts/install-skills.sh "$PWD"
+```
 
-범용 지침, 공개 출처 링크, 독립적으로 만든 가상 과제만 저장합니다. 실제 평가 문제·답안·작업 로그·개인 접속 링크·이메일·비공개 가이드·인증 정보는 저장하지 않습니다. 시험 중 생성한 작업물을 이 저장소로 push하지 않습니다. 실제 시험에서는 해당 운영진의 최신 안내와 제공 환경의 제한이 항상 우선합니다.
+위 스크립트는 `<현재 작업 디렉터리>/.agents/skills/`에 각 Skill 디렉터리를 복사하며, **같은 이름의 기존 Skill을 덮어쓰지 않습니다**. 스크립트는 네트워크 접속이나 파일 업로드를 하지 않습니다. 과제 작업 폴더에 스킬 복사 자체가 부적절하다면 이 단계를 건너뛰세요.
 
-## 공개 평가 방향 참고
+**③ Codex 시작 / 지시**
 
-Cofa 공식 공개 설명은 결과물뿐 아니라 AI 대화·도구 사용·검증 기록과 실제 구현에 부합하는 사후 설명을 함께 검토한다고 안내합니다. 이를 바탕으로 한 **준비 전략**이며 비공개 세부 채점 기준을 안다는 뜻은 아닙니다.
+이미 실행 중이거나 설치한 스킬이 자동 인식되지 않으면, Codex에서 먼저 다음 파일을 직접 읽도록 지시하면 됩니다.
 
-- https://www.getcofa.com/ko/probe
+```text
+/tmp/hojun_skill_hub/START_HERE.md를 읽고, 실제 과제 README와
+기존 프로젝트를 확인해. 이 문제에 도움되는 풀이 스킬을
+1~2개 선택해 해당 SKILL.md를 읽고 구현해.
+```
 
-조사 기준일: 2026-10-30. 외부 링크의 main 브랜치는 변경될 수 있으므로 실제 도입 전 커밋 고정·라이선스·의존성·외부 통신 여부를 별도로 점검합니다.
+Skill 자동 발견은 Codex 배포 버전·세션 시작 시점에 따라 다를 수 있습니다. 이 저장소는 **수동 파일 읽기**로도 사용 가능합니다. Codex 업데이트를 요구하지 않습니다.
+
+## 상황별 스킬
+
+| 필요한 상황 | 사용 스킬 | 역할 |
+|---|---|---|
+| 과제가 무엇인지 분류 | `task-router` | 시작 시 필요한 Skill만 선택 |
+| 웹페이지·랜딩 페이지 | `build-web-ui` | 실제로 작동하는 화면, 폼, 반응형 |
+| 예약·문의·할 일·관리 앱 | `build-app-workflow` | CRUD, 상태, 저장, 검증 |
+| CSV/JSON 가공·집계·리포트 | `solve-data-task` | 데이터 정합성과 출력 검증 |
+| REST API·서버 작업 | `build-api` | 라우트, 계약, 오류 처리, API 테스트 |
+| 알고리즘·유틸리티·CLI 로직 | `solve-code-task` | 정답 로직과 경계 입력 |
+| 기존 코드 오류·빌드 실패 | `debug-existing-project` | 재현→원인→최소 수정→재실행 |
+| 자료 기반 문서·요약·제안서 | `write-work-document` | 근거 기반 문서와 필수 형식 |
+| 완료 후 핵심 검수 | `review-result` | 미충족·미검증·제출 상태 확인 |
+| 본인이 구현을 이해하고 싶을 때 | `explain-work` | 코드 흐름과 실제 판단 근거 요약 |
+
+처음 읽을 파일: [START_HERE.md](START_HERE.md) · [MCP 판단 기준](docs/MCP.md) · [참고 출처](docs/SOURCES.md)
+
+## 저장소 구조
+
+```text
+.agents/skills/
+  task-router/SKILL.md
+  build-web-ui/SKILL.md
+  build-app-workflow/SKILL.md
+  solve-data-task/SKILL.md
+  build-api/SKILL.md
+  solve-code-task/SKILL.md
+  debug-existing-project/SKILL.md
+  write-work-document/SKILL.md
+  review-result/SKILL.md
+  explain-work/SKILL.md
+START_HERE.md
+AGENTS.md
+scripts/install-skills.sh
+scripts/validate-skills.py
+docs/MCP.md
+docs/SOURCES.md
+```
+
+## 검증
+
+```bash
+python3 scripts/validate-skills.py
+```
+
+이 검사는 **Skill 구조·메타데이터의 기본 유효성만 확인**합니다. 각 과제에서 성능 향상과 Codex 자동 발견까지 증명하는 테스트는 아닙니다.
