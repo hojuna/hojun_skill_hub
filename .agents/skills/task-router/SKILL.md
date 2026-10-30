@@ -1,25 +1,28 @@
 ---
 name: task-router
-description: Select relevant local skills after reading the assignment README and project. Use for web pages, CRUD apps, CSV/JSON, APIs, debugging, CLI logic or document work, and route unsupported or incompatible tasks to resolve-skill-gap.
+description: Choose relevant local solving skills for a new coding or practical task; when no skill fits, solve the task directly using the agent's normal reasoning, implementation, and verification abilities without searching for or inventing a skill.
 ---
 
-# Task router: small and useful
+# Choose only useful skills; otherwise solve directly
 
-1. Read the actual task README, file tree, existing code, tests and completion criteria **before choosing skills**.
-2. Identify the main deliverable and required operations. Assess skill fit by capabilities, output format, stack and permitted tools, not task-name similarity alone.
-3. Use this routing table (read the selected SKILL.md, not all files):
-   - Visual website, landing page, form → `build-web-ui`
-   - CRUD, booking, dashboard interactions, saved state → `build-app-workflow`
-   - CSV/JSON/data cleaning, aggregation → `solve-data-task`
-   - HTTP API/server/backend → `build-api`
-   - Algorithms, scripts, utility functions, CLI → `solve-code-task`
-   - Existing bug, failing tests, broken build → `debug-existing-project`
-   - Research using supplied material, summary, proposal → `write-work-document`
-4. Decide the route:
-   - **Suitable match:** read one primary solving skill. Add one complementary skill only if necessary.
-   - **Partial match, no match, or incompatible/unavailable tool:** read `../resolve-skill-gap/SKILL.md` relative to this file, then follow its decision. Do not force-fit a skill or stop at 'no matching skill'.
-5. For interface-heavy CRUD tasks, use `build-app-workflow` first and `build-web-ui` as a focused secondary skill. For a data dashboard, solve data correctness first.
-6. State in 2–3 lines what must work, the chosen route and first validation; start implementation promptly. A no-skill DIRECT route is valid.
-7. Once implemented, use `review-result` for actual validation; use `explain-work` when the user needs to understand the work.
+1. Read the actual task README, files, source, available commands, tests, required outputs, and time constraints.
+2. Decide whether a local Skill **materially improves** solving this task. Use the following only as guides:
+   - Web page, UI, form → `build-web-ui`
+   - CRUD, booking, stateful workflows → `build-app-workflow`
+   - CSV/JSON cleaning or aggregation → `solve-data-task`
+   - HTTP API/backend → `build-api`
+   - Functions, algorithm, CLI utility → `solve-code-task`
+   - Existing bug or broken project → `debug-existing-project`
+   - Evidence-based written report → `write-work-document`
+3. If useful: read **one** primary solving Skill; optionally one supplementary Skill. Apply only the relevant guidance; the task specification takes precedence.
+4. **If no Skill is a good fit, or only part of one is useful:** do not treat it as a problem. **No fallback Skill is needed.** Solve the task using ordinary engineering judgment and built-in tools. Do **not** search for more Skills, invent a new Skill, configure MCPs, or stall just because no Skill matches.
+5. **Always, with or without a Skill:**
+   - Identify mandatory input/output, behavior, constraints, and observable completion criteria.
+   - Inspect the existing project and reuse its stack and tools.
+   - Implement the smallest **complete, working** result first, then required remaining details.
+   - Run actual code/tests/preview; check normal and important failure/boundary cases.
+   - Fix defects and rerun relevant checks. Mark unverified work honestly.
+6. State only a concise plan if needed, then **start solving**. Do not spend time discussing the Skill selection.
+7. Before submission, use `review-result` when useful. To help the user understand actual implementation and tests, use `explain-work` before any phase that prohibits AI.
 
-Resolve sibling skill paths from the directory containing this SKILL.md, not blindly from the current working directory. Never run every skill, force a stack migration, or recursively install dependencies. Public reference discovery is conditional and bounded by `resolve-skill-gap`; it must not export task content. Do not re-enter routing for the same gap.
+**A Skill is optional assistance, not a prerequisite for solving.** Never force-fit tasks or collect tools for their own sake. Follow the assignment and environment rules; never transfer task materials to unapproved external systems.

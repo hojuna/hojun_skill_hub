@@ -6,7 +6,7 @@
 
 - **풀이 우선:** 과제 요구사항을 충족하는 작동 결과물을 만드는 데 집중합니다.
 - **선택적으로 사용:** 과제와 관련된 풀이 Skill 1~2개만 읽습니다. 전체 Skill을 한꺼번에 적용하지 않습니다.
-- **맞는 스킬이 없어도 대응:** `resolve-skill-gap`이 기존 스킬 조합, 일반 풀이, 허용된 자료 탐색, 실제 장애 보고 중 적합한 경로를 안내합니다.
+- **스킬은 선택 사항:** 맞는 스킬이 없으면 찾거나 새로 만들지 않고 기존 Codex의 문제 해결 능력으로 직접 구현·테스트합니다.
 - **검수·이해는 보조:** `review-result`, `explain-work`를 필요할 때 한 번씩 사용합니다.
 - **기존 환경 존중:** 제공된 코드·테스트·도구·제출 규칙이 언제나 우선합니다.
 - **규정 준수:** 문제·파일·산출물의 외부 전송, 비허용 도구 사용, 감독·플랫폼 제한 우회를 지시하지 않습니다.
@@ -34,8 +34,8 @@ bash /tmp/hojun_skill_hub/scripts/install-skills.sh "$PWD"
 ```text
 /tmp/hojun_skill_hub/START_HERE.md를 읽고, 실제 과제 README와
 기존 프로젝트를 확인해. 필요한 풀이 스킬만 선택해서 구현해.
-맞는 스킬이 없거나 일부만 맞으면 resolve-skill-gap을 읽고
-적합한 대안을 선택해. 경로는 읽은 START_HERE.md의 디렉터리를 기준으로 해.
+맞는 스킬이 없으면 추가 탐색 없이 직접 구현하고 테스트해.
+경로는 읽은 START_HERE.md의 디렉터리를 기준으로 해.
 ```
 
 Skill 자동 발견은 Codex 배포 버전·세션 시작 시점에 따라 다를 수 있습니다. 이 저장소는 **수동 파일 읽기**로도 사용 가능합니다. Codex 업데이트를 요구하지 않습니다.
@@ -49,7 +49,7 @@ Skill 자동 발견은 Codex 배포 버전·세션 시작 시점에 따라 다�
 | 필요한 상황 | 사용 스킬 | 역할 |
 |---|---|---|
 | 과제가 무엇인지 분류 | `task-router` | 시작 시 필요한 Skill만 선택 |
-| 맞는 스킬이 없음·일부만 맞음 | `resolve-skill-gap` | 조합·일반 풀이·자료 탐색·장애 대응 선택 |
+| 맞는 스킬이 없음 | 스킬 없이 직접 해결 | 요구사항 분석 → 구현 → 실행·테스트 → 수정 |
 | 웹페이지·랜딩 페이지 | `build-web-ui` | 실제로 작동하는 화면, 폼, 반응형 |
 | 예약·문의·할 일·관리 앱 | `build-app-workflow` | CRUD, 상태, 저장, 검증 |
 | CSV/JSON 가공·집계·리포트 | `solve-data-task` | 데이터 정합성과 출력 검증 |
@@ -67,7 +67,6 @@ Skill 자동 발견은 Codex 배포 버전·세션 시작 시점에 따라 다�
 ```text
 .agents/skills/
   task-router/SKILL.md
-  resolve-skill-gap/SKILL.md
   build-web-ui/SKILL.md
   build-app-workflow/SKILL.md
   solve-data-task/SKILL.md
