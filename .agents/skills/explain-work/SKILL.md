@@ -1,66 +1,46 @@
 ---
 name: explain-work
-description: Explain actual implementation in Korean using source and execution evidence. Use for request flow, component responsibilities and states, design trade-offs and alternatives, failure behavior, test and performance claims, user-visible result quality, and optional independent explanation practice.
+description: Help the user understand their actual work in Korean. Select explanation topics from the task, deliverable, consequential decisions, evidence and understanding gaps rather than a fixed checklist or past assessment questions. Offer independent question practice only when requested.
 ---
 
-# Explain the actual work, not a plausible architecture
+# Understand this work, not a question template
 
-Help the owner understand and defend what was really built. **Solving remains the priority:** this is an explanation aid, not a new implementation or documentation ceremony. Apply only the lenses relevant to the task; do not invent components to fill a template.
+Help the owner explain what they actually made and why it satisfies the task. **Solving remains the priority.** This is an optional explanation aid, not an exam syllabus, a new implementation phase or a mandatory report.
 
-## Ground the explanation first
+## Ground the explanation
 
-Read the task, relevant source/configuration, available diffs, tests, execution outputs and submitted notes. Source shows implementation; observed runs show behavior; a document's claim is not proof of either. Distinguish **구현 확인 / 실행 확인 / 문서 주장·근거 미확인 / 추정·제안** where it matters.
+Read the actual requirements, relevant deliverable/source/configuration, available work history, tests, execution outputs and notes. Follow the supplied task's terminology and success criteria. Do not silently replace them with a generic architecture or assumptions about what an evaluator wants.
 
-Cite actual file paths and symbols, plus test/log locations or observed command results. Use line numbers only when checked. Missing records mean **확인 불가**, not proof that an action never happened. Do not invent numbers, historical decisions, commands, states or guarantees.
+Distinguish implementation, observed execution, unsupported document claims and inference/proposals. Cite actual files/symbols, source sections or test/log locations where useful; use line numbers only when checked. Missing records mean **확인 불가**, not proof an action never happened. A test definition is not proof of execution. Do not invent commands, numbers, states, guarantees or historical decisions.
 
-Default to reading and explaining. Do not launch load tests, modify code or rewrite documents just to produce an explanation. If the user requests verification, perform only scoped, permitted checks; label new runs as **이번 점검에서 재실행**, not historical evidence.
+Default to reading and explaining. Do not edit the deliverable or launch new experiments solely to create a more impressive explanation. If verification is requested, label new runs **이번 점검에서 재실행**, not historical evidence.
 
-## Five explanation lenses
+## Choose topics from the work itself
 
-### 1. Request flow, responsibility and state
+1. Identify what the user was asked to achieve and what was actually produced.
+2. Find the parts most important to understanding that result: consequential choices, non-obvious reasoning, difficult changes, assumptions that affect correctness, or claims whose evidence is unclear.
+3. Select only the topics that matter for this deliverable and the user's current understanding. Prefer a small number of meaningful explanations over exhaustive coverage. Do not force a fixed number of sections or questions.
+4. Explain each chosen point with its actual mechanism or reasoning, connection to the requirement, supporting evidence and relevant limits. Use a worked example or input-to-output trace when it clarifies the point; do not impose a component diagram on every task.
+5. Notice important topics not suggested by any example list. If the user reveals confusion, clarify that part rather than repeating a preset report.
 
-Trace one real user action from entry to final output in execution order, including handoffs, reads/writes, validation and how the result reaches the user. Distinguish request acceptance from actual completion.
+A web interaction might need a state-flow explanation; a data analysis might need its aggregation assumptions; a small algorithm might need an invariant; a written proposal might need its source-to-conclusion reasoning. These are **illustrations, not required categories or predicted questions**. Architecture, failures, performance, user experience, AI collaboration, alternative methods or any other topic belong only when supported by this task, its risks, records or the user's request.
 
-For each component that exists, explain: **input → responsibility → output → owned state/data → next recipient**, with its actual file/function. Identify who owns state changes, who merely reads them, and when data becomes persistent. Use actual status names and transitions, not invented generic states. For asynchronous work, show how processing starts and how the user learns completion/failure. For a small script, a compact input/process/output chain is sufficient.
+Past question examples illustrate possible depth of understanding; they do not establish future topics, probabilities, scoring weights, a required architecture or a fixed question count. Do not reconstruct, publish or drill a protected assessment question set.
 
-### 2. Design choice, trade-offs and alternatives
+## Keep useful lessons without turning them into a checklist
 
-Choose the most consequential one or two decisions. Explain **requirement/constraint → chosen mechanism → useful benefit → cost/limitation**. State documented historical reasons separately from a present-day interpretation of why the choice fits.
+- Explain important choices against actual constraints, including costs or limitations when relevant. Separate documented historical reasons from present-day interpretation. A new alternative is **사후 비교·대안 제안**, not something supposedly considered earlier.
+- Match claims to evidence. A claim about accuracy needs appropriate correctness evidence; a claim about speed needs actual measurements under stated conditions. Do not demand performance benchmarks for work that neither requires nor claims performance improvement.
+- Where a comparison is claimed, check the baseline and comparability. Say **정량 비교 없음** or **근거 확인 불가** when appropriate, rather than inventing a benefit.
+- Where behavior is described, distinguish observed behavior from static inspection or prediction. A technology's name is not evidence that a particular safeguard exists.
+- Explain how the result satisfies the task's real success criteria. A completed process, polished appearance or passing test need not prove every claimed property. Do not add unrequested quality standards as mandatory requirements.
 
-Compare one or two viable alternatives when useful: how each would work, what code/infrastructure/state handling would change, and when it would be preferable. Previously unconsidered alternatives must be labeled **사후 비교·대안 제안**; never claim they were considered during implementation. Do not describe one approach as universally better.
+## Response and optional practice
 
-Check guarantees in code/configuration. An architectural label alone does not establish bounded concurrency, retry, recovery, cancellation or duplicate prevention. Say which mechanisms actually exist and which are proposals.
+Respond in clear Korean. Start with a brief account of the goal and actual result, then explain the selected important points at a useful depth with source pointers. Mention material uncertainties or understanding gaps. Omit irrelevant topics entirely; do not fill sections with '해당 없음'. No fixed section layout, question count or exhaustive file inventory is required. Do not create a long document unless requested.
 
-### 3. Invalid input, failures and overload
+Only when requested, generate **연습용 생성 질문** from the current work, meaningful decisions and understanding gaps. Follow the user's requested length or count; otherwise keep the set small and relevant. Do not copy past question patterns, imply known future exam questions, or insist on one question per category. A changed assumption can be explored when it helps test understanding, clearly as a hypothetical rather than an implemented feature.
 
-Select realistic failure paths relevant to the implementation: malformed input, semantically invalid data, computation/validation errors, dependency failure, timeout, or excessive concurrent work. Trace **where detected → actual response/state → saved or partial results → what the user sees → recovery/retry, if implemented**.
+For independent practice, show questions without answers or hints. After the user answers, compare the response with actual evidence, explain inaccuracies and omissions, and adapt follow-up questions to the user's understanding. Do not reward an answer merely for matching a memorized phrasing.
 
-Separate observed behavior from a static-code prediction. Check admission/concurrency limits and timeouts only where applicable. If overload or recovery was not tested, say so; never promise graceful rejection, automatic recovery or loss-free processing without evidence. Explain an unsafe/unhandled path as a limitation rather than an implemented safeguard.
-
-### 4. Verification and improvement evidence
-
-Audit claims such as 'tested', 'load-tested', 'faster' or 'robust' against available evidence. For each important claim, connect **claim → actual command/script → input and conditions → observed output/log → conclusion and limit**. A test file's existence is not evidence it ran.
-
-For performance/load claims, look for the actual workload, concurrency or arrival rate, request count/duration, data size, environment/version, metric definition and results. Distinguish submission/acceptance latency from end-to-end completion; distinguish waiting from processing when relevant. Report only measured metrics; do not invent percentiles, throughput, error rates or thresholds.
-
-For an improvement, show **observed bottleneck → exact change → same-condition recheck → before/after evidence → trade-off**. Flag changed workloads/environments and noncomparable runs. With no baseline, say **정량 비교 없음**; with code but no run, **구현 확인·실행 미검증**; with missing logs, **근거 확인 불가**. Do not turn a proposed optimization into a proven speedup. Surface important unsupported document claims instead of repeating them as facts.
-
-### 5. How the user can judge the result
-
-Explain which screen/file/report the user opens and the concrete steps to confirm the output matches the original request. Separate **request accepted**, **processing succeeded**, **specified constraints passed**, and **useful result quality**; do not infer all of them from one success indicator.
-
-Use only task-defined or implemented checks: inspect important values, compare with a known expected example, check a validation report, or confirm output constraints, as applicable. Identify what any validator actually checks and does not check; passing it is not proof of optimality or domain usefulness. Mark additional quality criteria as proposals. Explain how the user sees failure, partial results, warnings and required corrective action.
-
-## Default response: compact, evidence-linked Korean
-
-Start with one sentence describing the deliverable. Give five short sections using the lenses above, about 2–4 sentences each, plus key source/test pointers. Expand only risky or unclear parts. If a lens does not apply, say so briefly. Prioritize explaining the system over listing files.
-
-End with **핵심 한계·근거 부족** and three self-check questions targeting weak understanding or weak evidence. Do not generate a long report file unless requested or required. Leave the public hub unchanged and keep task-specific explanations in the task workspace/conversation.
-
-## Optional question practice — only when requested
-
-Generate six practice questions by default, based on actual work and evidence gaps, covering the applicable lenses. Label them **연습용 생성 질문**, not known assessment questions or a reconstruction of an unknown question. Do not promise a future evaluator will ask them.
-
-Show questions without model answers. Let the user answer independently; do not reveal answer hints during the attempt. Afterwards, compare each answer with code and recorded evidence, pointing out correct claims, unsupported claims and omissions. Newly proposed alternatives are allowed if clearly distinguished from past actions.
-
-If a follow-up assessment prohibits AI, use this skill only before that phase, or for permitted post-assessment review. Never assist during a prohibited live answering phase, manipulate question generation, fabricate logs, or publish protected assessment questions/answers or task materials to the public hub or external services.
+Keep task-specific explanations in the task workspace/conversation, not the public hub. Follow assessment rules: never assist during a phase that prohibits AI, manipulate question generation, fabricate records or publish protected task materials. Use this skill before such a phase or for permitted post-assessment review.

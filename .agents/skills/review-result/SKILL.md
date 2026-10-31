@@ -1,46 +1,41 @@
 ---
 name: review-result
-description: Verify a solution against requirements, actual execution, failure paths and user-visible output quality. Use before submission to catch missing behavior, untested states, unsupported test or performance claims in documents, critical regressions and incorrect deliverable paths.
+description: Verify a deliverable against its own requirements and evidence. Select checks according to the actual task, material risks and claims rather than a fixed architecture or assessment pattern. Report missing behavior, incorrect outputs, unsupported claims and unverified items.
 ---
 
-# Verify behavior and claims, not the agent's confidence
+# Check this deliverable against this task
 
-**Default: inspect, run bounded relevant checks, and report.** Fix only when requested, then rerun. Do not expand into optional refactors, mandatory benchmarks or extra infrastructure. Task-solving time and the original requirements remain the priority.
+**Default: inspect, run bounded relevant checks, and report.** Fix only when requested, then rerun. Task solving remains the priority. Do not turn past assessment examples into mandatory checks, add features for a hypothetical exam, or require a benchmark or distributed-system review for every task.
 
-## Focused checks
+## Derive the review from the task
 
-1. Read the actual task/README. Extract mandatory behavior, output paths/formats and acceptance criteria. Inspect implementation and existing tests rather than relying on a completion summary.
-2. Trace the primary end-to-end action. Check component handoffs and, where applicable, who reads/writes state, persistence and transition rules. Distinguish an accepted request from a completed result; compare the user's displayed status with actual outcome.
-3. Run the best existing tests/build/CLI and one primary user flow when accessible. Compare a representative output with task-defined constraints or a known expected result. A successful build, HTTP response or execution status is not proof of usable/correct output. State what a validator covers and leaves unchecked.
-4. Check relevant negative paths: malformed/semantically invalid input, processing failure, timeouts and resource limits where they exist. Verify the resulting response/state, partial data and user-visible error. Do not infer retry/recovery/concurrency guarantees from the architecture's name. Label static inspection separately from executed checks.
-5. Audit important assertions in README, reports and explanation files against code and actual run records using the evidence check below. Flag contradictions or unsupported claims even when functionality works.
-6. Mark mandatory items **passed / failed / not tested**. Prioritize P0: cannot run/missing output/wrong primary result; P1: mandatory edge-case or serious unsupported claim; P2: optional polish. Give the next highest-impact correction with exact reproduction or source location.
+1. Read the actual requirements, submission rules and supplied acceptance criteria. Identify the mandatory result, output paths/formats and what would make the result incorrect or unusable.
+2. Inspect the deliverable and its supporting code/data/sources. Follow its main behavior or reasoning far enough to understand the result. Choose checks based on the requirements, material risks and claims actually made, not a preset list of technologies.
+3. Use existing tests, build/CLI checks, representative inputs, browser interaction or source-to-conclusion checks as appropriate. Compare with an independently derived expected result or task-defined criterion where feasible. Distinguish static inspection from execution. A successful build or completed process does not by itself validate every property of the result.
+4. Probe relevant boundaries, failure modes or weak assumptions when they could materially affect the task. State/ownership, concurrency, statistical assumptions, accessibility, security, output formatting and other concerns are possible topics, **not mandatory headings**. Do not invent components or new requirements to fit a review template.
+5. Check important assertions in the deliverable and accompanying notes against the available evidence. Prioritize claims relevant to acceptance, user understanding or decisions; do not exhaustively audit irrelevant wording.
+6. Mark mandatory items **passed / failed / not tested**. Prioritize blocking execution/output errors, wrong primary results and unmet requirements over optional polish. Report serious unsupported claims separately from proven functional failures.
 
-## Evidence check for document claims
+## Evidence discipline
 
-For important claims record **주장 → 코드·테스트 위치 → 실제 실행 명령/조건/결과 → 근거 상태**. A script or test definition is not an execution record. Missing evidence means **확인 불가**, not that the claimed action certainly did not occur.
+For a material claim, connect **주장 → 관련 구현·자료 → 확인 방법·조건 → 관찰 결과 → 주장 가능한 범위**. Source or a test definition is not an execution record. Missing records mean **근거 확인 불가**, not proof that no work occurred. Do not invent measurements, past actions or guarantees.
 
-For a load/performance claim, look for workload/data size, concurrency or arrival rate, duration/count, environment and revision, metrics and recorded results. Separate request acceptance time from actual completion time. For an improvement, verify a baseline, the actual code/config change and a comparable rerun; note changed conditions and measurement limits. Do not invent numbers or describe a theoretical benefit as a measured speedup.
+Only when performance or an improvement is required or claimed, inspect the relevant measurement conditions, actual results, baseline and comparability. Do not impose load testing on unrelated work. The same principle applies to any conclusion: its evidence must support the specific claim, not merely look technical.
 
-If evidence is missing, recommend an accurate qualification such as **정량 비교 없음** or **실행 근거 확인 불가**, or a safe future check. Do not silently rewrite historical records, manufacture evidence, or run a benchmark solely to validate a past-tense claim. New verification is labeled **이번 점검에서 재실행**. Change documents only when authorized.
+If evidence is missing, recommend an accurate qualification or a proportionate future check. Do not silently rewrite history or manufacture proof. Label new verification **이번 점검에서 재실행** and change documents only when authorized.
 
-## Safe scope
+## Scope and output
 
-Use existing bounded local tests first. Do not automatically saturate CPU/RAM, flood requests, stop shared processes, or test external services. A new load/fault-injection test requires explicit authorization, an isolated permitted target, resource/time limits and a stop condition. If unavailable, report **부하·장애 실험 미검증** and inspect existing code/records instead.
+Use existing bounded local checks first. Do not automatically flood requests, exhaust resources, stop shared processes or test external services. A new disruptive load/fault test needs explicit authorization, an isolated permitted target, limits and a stop condition. Mention an untested area only when relevant; do not list every conceivable missing experiment as a defect.
 
-Do not impose every check on every task. A small script does not need a distributed-system review. Do not publish task files or logs to the public hub or unapproved services.
-
-## Short required output
+Keep the report concise:
 
 ```text
 판정: 제출 가능 / 수정 필요 / 확인 불가
 필수조건: 충족 N / 미충족 N / 미검증 N
-실행 증거: [명령/사용자 흐름과 조건] → [실제 결과 또는 실행하지 못함]
-상태·실패 경로: [확인한 전이·오류 처리 / 코드만 확인 / 미검증 / 해당 없음]
-문서 주장 대조: [근거 확인 / 불일치 / 근거 확인 불가, 중요한 항목만]
-사용자 결과 확인: [화면·파일에서 확인할 조건과 방법, 검증 범위의 한계]
-핵심 문제: [파일·재현 조건·심각도, 없으면 '확인 범위에서 없음']
+확인 근거: [실제로 확인한 내용·방법·조건·결과]
+핵심 문제·한계: [요구사항 영향, 재현/근거, 불일치 또는 미검증]
 다음 행동: [가장 중요한 수정 또는 제출 전 확인]
 ```
 
-State environment limitations and unknowns honestly. Do not rewrite the app just because another architecture looks cleaner. Explain documented choices and possible alternatives without presenting hypothetical trade-offs as tested results.
+Add topic-specific detail only when it explains a material finding. Preserve the task's terminology and criteria. Do not rewrite the app for stylistic preference, publish task files/logs, or describe a hypothetical improvement as a measured result.
